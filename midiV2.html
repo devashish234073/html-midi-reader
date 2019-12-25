@@ -1,0 +1,107 @@
+<head>
+<style>
+li{
+border-radius:10px;
+background-color:khaki;
+box-shadow:3px 3px 7px blue;
+margin-bottom:3px;
+font-size:12px;
+width:70px;
+padding-left:7px;
+}
+</style>
+<head>
+<body>
+<p>Hello</p><button onclick="userGesture()">Start Receiving</button>
+<ul>
+<li id="li1"></li>
+<li id="li2"></li>
+<li id="li3"></li>
+<li id="li4"></li>
+<li id="li5"></li>
+<li id="li6"></li>
+<li id="li7"></li>
+<li id="li8"></li>
+<li id="li9"></li>
+</ul>
+<audio controls>
+  <source src="02 Tum Se Hi.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+<button onclick="switchSong()">Play</button>
+<script>
+var indx0 = 0;
+var audio = document.querySelector("audio");
+var songs = ["02 Jee Karda [FilmiXpress.Net].mp3","01  Ajab Si.mp3","01 Twist.mp3","03 Chor Bazari.mp3","05 Aahun Aahun.mp3"];
+function switchSong() {
+audio.pause();
+indx0+=1;
+if(indx0>4){
+indx0=0;
+}
+audio.src = songs[indx0];
+audio.play();
+}
+</script>
+<script>
+var button = document.querySelector("button");
+var p=document.querySelector("p");
+var li1=document.querySelector("#li1");
+var li2=document.querySelector("#li2");
+var li3=document.querySelector("#li3");
+var li4=document.querySelector("#li4");
+var li5=document.querySelector("#li5");
+var li6=document.querySelector("#li6");
+var li7=document.querySelector("#li7");
+var li8=document.querySelector("#li8");
+var li9=document.querySelector("#li9");
+var ul=[li1,li2,li3,li4,li5,li6,li7,li8,li9];
+
+p.innerText="started";
+
+function onMIDIFailure() {
+  p.innerText="Not finding a MIDI controller";
+}
+
+var indx = -1;
+function onMIDImessage(messageData) {
+  if(indx==8){
+    for(var j=0;j<8;j++){
+      ul[j].innerText=ul[j+1].innerText;
+      ul[j].style.backgroundColor="rgb("+ul[j].innerText+")";
+    }
+  } else {
+    indx+=1;
+  }
+  ul[indx].innerText=messageData.data;
+  ul[indx].style.backgroundColor="rgb("+messageData.data+")";
+  switchSong();
+}
+
+function onMIDISuccess(midiData) {
+  var midi = midiData;
+  p.innerText="midi controller active";
+  var allInputs = midi.inputs.values();
+  for (var input = allInputs.next(); input && !input.done;input=allInputs.next()){
+    input.value.onmidimessage = onMIDImessage;
+    //console.log(input.value);
+  }
+}
+
+function userGesture() {
+  var context = new AudioContext();
+  if(context==null || context==undefined){
+    p.innerText="not able to get audio context";
+  } else{
+    button.style.display="none";
+    var oscillators = {};
+    var midi, data;
+    if (navigator!=undefined && navigator.requestMIDIAccess) {
+      navigator.requestMIDIAccess({sysex: false}).then(onMIDISuccess, onMIDIFailure);
+    } else {
+      p.innerText="No MIDI support in your browser";
+    }
+  }
+}
+
+</script>                                                                                                                                                                                  
