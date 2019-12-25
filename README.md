@@ -1,3 +1,9 @@
+# added midiV2.html
+
+This file has an audio control included, and the script tag has a song variable which needs to be updated to have the songs that you have in your directory or you can give complete path.
+
+On every signal received from the MIDI piano, it plays one of those songs.
+
 # html-midi-reader
 
 Just click on start receiving and it will receive the data from an MIDI controller be it an actual harware or an android app.
