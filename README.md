@@ -2,6 +2,8 @@
 
 https://youtu.be/PahWbuVhQgc
 
+![image](https://user-images.githubusercontent.com/20777854/71483699-08892100-282f-11ea-8ce5-6c2dcaaecff4.png)
+
 # added midiV2.html
 
 This file has an audio control included, and the script tag has a song variable which needs to be updated to have the songs that you have in your directory or you can give complete path.
