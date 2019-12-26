@@ -1,0 +1,76 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+<style>
+button{
+width:100%;
+}
+input{
+padding-left:5px;
+}
+</style>
+</head>
+<body>
+<table>
+<tr>
+<td>Frequency</td>
+<td><input id="freq" type="number" value="440"></td>
+</tr>
+<tr>
+<td>Play Sound for</td>
+<td><input id="delay" type="number" value="500">ms</td>
+</tr>
+<tr>
+<td>
+<button onclick="createButtonWrapper()">Create Button</button>
+</td>
+<td>
+<button onclick="playSound()">Play</button>
+</td>
+</tr>
+</table>
+<script>
+var freq=document.querySelector("#freq");
+var table=document.querySelector("table");
+var delay=document.querySelector("#delay");
+var ctxt=new AudioContext();
+
+function playWrapper(f,d){
+freq.value=f;
+delay.value=d;
+playSound();
+}
+
+function bindEvent4Btn(btn,f,d){
+btn.addEventListener("click",()=>{
+playWrapper(f,d);
+});
+}
+
+function playSound(){
+   var o=ctxt.createOscillator(); o.frequency.setTargetAtTime(freq.value,ctxt.currentTime,0);
+    o.connect(ctxt.destination);
+    o.start(0);
+    setTimeout(()=>{o.stop();},delay.value);
+}
+
+function createButtonWrapper(){
+createButton(freq.value,delay.value);
+}
+
+function createButton(f,d){
+var btn=document.createElement("button");
+bindEvent4Btn(btn,f,d);
+btn.innerText="Play ("+f+","+d+")";
+var tr=document.createElement("tr");
+var td=document.createElement("td");
+td.setAttribute("colspan","2");
+tr.appendChild(td);
+td.appendChild(btn);
+table.appendChild(tr);
+}
+createButton(40,400);
+createButton(60,400);
+</script>
+</body>
+</html>
